@@ -17,6 +17,12 @@ import java.util.stream.Collectors;
 @Path("/app")
 public class SampleResource {
 
+    // Quarkus and its native image generation performs better CDI
+    // work without private members. Dependency injection requires a
+    // lot of Reflection API usage, which is very expensive.
+    // In the interest of generating better-performing native images,
+    // don’t use the private modifier for fields. Stick with
+    // package-level access for class-level variables.
     @Inject
     VanillaCake vanillaCake;
 

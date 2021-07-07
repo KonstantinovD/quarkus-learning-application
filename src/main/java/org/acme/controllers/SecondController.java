@@ -1,5 +1,6 @@
 package org.acme.controllers;
 
+import org.acme.beans.StartupConfigCheck;
 import org.acme.beans.interceptors.Generator;
 
 import javax.inject.Inject;
@@ -22,4 +23,13 @@ public class SecondController {
         generatorForInterceptor.generate(str);
     }
 
+    @Inject
+    StartupConfigCheck startupConfigCheck;
+
+    @GET
+    @Path("/configcheck")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String configcheck() {
+        return startupConfigCheck.getMessage();
+    }
 }

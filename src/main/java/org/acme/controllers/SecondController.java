@@ -1,6 +1,7 @@
 package org.acme.controllers;
 
 import org.acme.beans.StartupConfigCheck;
+import org.acme.beans.beanprofiles.ProfileClass;
 import org.acme.beans.interceptors.Generator;
 
 import javax.inject.Inject;
@@ -31,5 +32,15 @@ public class SecondController {
     @Produces(MediaType.TEXT_PLAIN)
     public String configcheck() {
         return startupConfigCheck.getMessage();
+    }
+
+    @Inject
+    ProfileClass profileClass;
+
+    @GET
+    @Path("/profile")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String profile() {
+        return profileClass.getProfile();
     }
 }

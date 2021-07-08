@@ -3,8 +3,12 @@ package org.acme.controllers;
 import org.acme.beans.StartupConfigCheck;
 import org.acme.beans.beanprofiles.ProfileClass;
 import org.acme.beans.interceptors.Generator;
+import org.acme.beans.spring.AnotherSpringBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -42,5 +46,20 @@ public class SecondController {
     @Produces(MediaType.TEXT_PLAIN)
     public String profile() {
         return profileClass.getProfile();
+    }
+
+    // We can use both @Named and @Qualifier
+    //@Named("anotherSpringBean")
+    @Autowired
+    @Qualifier("anotherSpringBean")
+    AnotherSpringBean asb;
+    @Named("secondSpringBean")
+    @Inject
+    AnotherSpringBean ssb;
+    @GET
+    @Path("/springbean")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String springbean() {
+        return asb.getSpringValue() + " | " + ssb.getSpringValue();
     }
 }

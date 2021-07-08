@@ -4,6 +4,7 @@ import org.acme.beans.StartupConfigCheck;
 import org.acme.beans.beanprofiles.ProfileClass;
 import org.acme.beans.interceptors.Generator;
 import org.acme.beans.spring.AnotherSpringBean;
+import org.acme.beans.spring.ApplicationContextAwareReplacement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -28,6 +29,7 @@ public class SecondController {
         generatorForInterceptor.generate(str);
     }
 
+
     @Inject
     StartupConfigCheck startupConfigCheck;
 
@@ -38,6 +40,7 @@ public class SecondController {
         return startupConfigCheck.getMessage();
     }
 
+
     @Inject
     ProfileClass profileClass;
 
@@ -47,6 +50,7 @@ public class SecondController {
     public String profile() {
         return profileClass.getProfile();
     }
+
 
     // We can use both @Named and @Qualifier
     //@Named("anotherSpringBean")
@@ -61,5 +65,15 @@ public class SecondController {
     @Produces(MediaType.TEXT_PLAIN)
     public String springbean() {
         return asb.getSpringValue() + " | " + ssb.getSpringValue();
+    }
+
+
+    @Inject
+    ApplicationContextAwareReplacement acar;
+    @GET
+    @Path("/appcontextaware")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String appcontextaware() {
+        return acar.getBean().getValue();
     }
 }

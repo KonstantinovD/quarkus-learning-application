@@ -14,8 +14,9 @@ import javax.ws.rs.core.MediaType;
 public class BookExampleResource {
 
     @Inject
-    @ConfigProperty(name="quarkus.application.name",defaultValue
-      ="my-app-name" )
+    @ConfigProperty(
+      name="quarkus.application.name",
+      defaultValue ="my-app-name" )
     String applicationName;
 
     @GET
@@ -36,4 +37,11 @@ public class BookExampleResource {
           currentProfile, appName);
     }
 
+
+    @GET
+    @Path("/exception")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String generateException() {
+        throw new IllegalArgumentException("IAE to be throw");
+    }
 }

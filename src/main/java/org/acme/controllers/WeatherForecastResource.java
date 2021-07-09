@@ -16,6 +16,8 @@ import java.util.List;
 public class WeatherForecastResource {
     @Inject
     WeatherForecastService service;
+    @Inject
+    CachedService cachedService;
 
     @GET
     public WeatherForecast getForecast(
@@ -74,5 +76,29 @@ public class WeatherForecastResource {
     @Path("/invAll")
     public void invalidateAll() {
         service.invalidate5();
+    }
+
+    @GET
+    @Path("/cached")
+    public String cached() {
+        return cachedService.load();
+    }
+
+    @GET
+    @Path("/cached/inv")
+    public void cachedInv() {
+        cachedService.invalidate();
+    }
+
+    @GET
+    @Path("/cached/all")
+    public void cachedAll() {
+        cachedService.invalidateAllCached();
+    }
+
+    @GET
+    @Path("/cached/multiple")
+    public void multipleInvalidateAll() {
+        cachedService.multipleInvalidateAll();
     }
 }

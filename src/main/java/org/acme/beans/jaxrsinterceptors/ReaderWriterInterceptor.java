@@ -1,6 +1,7 @@
 package org.acme.beans.jaxrsinterceptors;
 
 import lombok.extern.slf4j.Slf4j;
+import org.acme.beans.jaxrsfilters.Address;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.ext.*;
@@ -15,11 +16,16 @@ public class ReaderWriterInterceptor
     @Override
     public void aroundWriteTo(WriterInterceptorContext context)
       throws IOException, WebApplicationException {
-      final OutputStream outputStream = context.getOutputStream();
-      String encrypted = "encrypted |";
-      outputStream.write(encrypted.getBytes());
-      context.setOutputStream(outputStream);
-      context.proceed();
+        // it will be executed for all contexts with type Address
+        if (context.getEntity() instanceof Address) {
+            final OutputStream outputStream = context.getOutputStream();
+            String encrypted = "encrypted |";
+            outputStream.write(encrypted.getBytes());
+            context.setOutputStream(outputStream);
+
+        }
+        // but in any case we should proceed received context
+        context.proceed();
     }
 
     @Override

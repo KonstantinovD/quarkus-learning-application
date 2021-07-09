@@ -1,15 +1,15 @@
 package org.acme.controllers;
 
 import io.quarkus.runtime.configuration.ProfileManager;
-import org.acme.beans.jaxrsfilters.UserDTO;
+import org.acme.beans.jaxrsfilters.Address;
 import org.eclipse.microprofile.config.ConfigProvider;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.UUID;
 
 @Path("/rest")
 public class BookExampleResource {
@@ -50,9 +50,10 @@ public class BookExampleResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/testfilter")
-    public Response testfilter(UserDTO data) {
-        data.setLogin("default");
-        data.setPassword("default");
+    public Response testfilter(Address data) {
+        data.setId(UUID.randomUUID().toString());
+        data.setNumber("12B");
+        data.setStreet("Ryzhova st.");
         return Response.ok(data).build();
     }
 

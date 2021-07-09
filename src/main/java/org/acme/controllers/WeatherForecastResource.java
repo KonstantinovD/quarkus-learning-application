@@ -7,6 +7,7 @@ import org.acme.beans.caching.WeatherForecastService;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -100,5 +101,17 @@ public class WeatherForecastResource {
     @Path("/cached/multiple")
     public void multipleInvalidateAll() {
         cachedService.multipleInvalidateAll();
+    }
+
+    @GET
+    @Path("/cached/{val}")
+    public String cacheNull(@PathParam("val") int val) {
+        return cachedService.caller(val);
+    }
+
+    @GET
+    @Path("/cached/throws/{val}")
+    public String cacheThrow(@PathParam("val") int val) {
+        return cachedService.caller2(val);
     }
 }

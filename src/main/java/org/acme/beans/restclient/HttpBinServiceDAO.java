@@ -1,5 +1,6 @@
 package org.acme.beans.restclient;
 
+import org.acme.beans.exceptionmapper.HttpBinExceptionMapper;
 import org.acme.beans.jaxrsfilters.LoggingFilter;
 import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
@@ -23,6 +24,9 @@ import java.util.concurrent.CompletionStage;
 // copy-paste this code as is and it will have a service to talk to.
 @RegisterProvider(LoggingFilter.class)
 // configures the supplied class as a JAX-RS provider for this interface.
+@RegisterProvider(HttpBinExceptionMapper.class)
+// The exception mapper will be triggered only if an HTTP status code of
+//400 or greater is returned by the service call
 public interface HttpBinServiceDAO {
 
     @GET
@@ -48,4 +52,8 @@ public interface HttpBinServiceDAO {
     @Path("anything/{anything}")
     @Produces(MediaType.TEXT_PLAIN)
     Response postAnything(@PathParam("anything") String anything);
+
+    @GET
+    @Path("/status/{codes}")
+    void getAnyStatusCode(@PathParam("codes") String codes);
 }

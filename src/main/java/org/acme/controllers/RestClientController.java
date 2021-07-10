@@ -63,6 +63,12 @@ public class RestClientController {
         return httpBinService.postAnything(anything);
     }
 
+    @GET
+    @Path("/status/{codes}")
+    public void getAnyStatusCode(@PathParam("codes") String codes) {
+        httpBinService.getAnyStatusCode(codes);
+    }
+
 
 
 }

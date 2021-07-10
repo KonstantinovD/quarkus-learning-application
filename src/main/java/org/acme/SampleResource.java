@@ -2,19 +2,19 @@ package org.acme;
 
 import io.quarkus.runtime.annotations.CommandLineArguments;
 import org.acme.beans.*;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 @Path("/app")
+@Tag(name = "SampleResource",
+  description = "initial quarkus controller")
 public class SampleResource {
 
     // Quarkus and its native image generation performs better CDI

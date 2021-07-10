@@ -3,6 +3,7 @@ package org.acme.controllers;
 import org.acme.beans.FlavorTown;
 import org.acme.beans.VanillaCake;
 import org.acme.beans.spring.AnotherSpringBean;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,9 @@ import javax.ws.rs.GET;
 
 @RestController
 @RequestMapping("/spring")
+@Tag(name = "SpringController",
+  description = "test spring rest controller " +
+    "& injecting quarkus beans into spring")
 public class SpringController {
 
     // set package private or get INFO warning

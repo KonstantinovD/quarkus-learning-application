@@ -6,6 +6,7 @@ import org.acme.beans.caching.WeatherForecastService;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -17,6 +18,8 @@ import java.util.Arrays;
 import java.util.List;
 
 @Path("/weather")
+@Tag(name = "WeatherForecastResource",
+  description = "Controller for testing caches")
 public class WeatherForecastResource {
     @Inject
     WeatherForecastService service;

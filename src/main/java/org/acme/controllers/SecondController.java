@@ -5,6 +5,7 @@ import org.acme.beans.beanprofiles.ProfileClass;
 import org.acme.beans.interceptors.Generator;
 import org.acme.beans.spring.AnotherSpringBean;
 import org.acme.beans.spring.ApplicationContextAwareReplacement;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -17,6 +18,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Path("/app")
+@Tag(name = "SecondController", description = "test beans injecting, " +
+  "spring beans, appContextAware replacement")
 public class SecondController {
 
     @Inject

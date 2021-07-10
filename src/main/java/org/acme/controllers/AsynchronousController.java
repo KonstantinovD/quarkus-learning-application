@@ -3,6 +3,7 @@ package org.acme.controllers;
 import lombok.extern.slf4j.Slf4j;
 import org.acme.beans.jaxrsfilters.UserDTO;
 import org.eclipse.microprofile.context.ManagedExecutor;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -20,6 +21,8 @@ import java.util.concurrent.Future;
 
 @Path("/async")
 @Slf4j
+@Tag(name = "AsynchronousController",
+  description = "Controller for testing async")
 public class AsynchronousController {
 
     @Inject

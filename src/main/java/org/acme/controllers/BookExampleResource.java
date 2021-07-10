@@ -4,6 +4,7 @@ import io.quarkus.runtime.configuration.ProfileManager;
 import org.acme.beans.jaxrsfilters.Address;
 import org.eclipse.microprofile.config.ConfigProvider;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -12,6 +13,9 @@ import javax.ws.rs.core.Response;
 import java.util.UUID;
 
 @Path("/rest")
+@Tag(name = "BookExampleResource",
+  description = "config props, profile, " +
+    "filters/interceptors, exception handling")
 public class BookExampleResource {
 
     @Inject

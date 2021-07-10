@@ -3,6 +3,9 @@ package org.acme.controllers;
 import org.acme.beans.caching.CachedService;
 import org.acme.beans.caching.WeatherForecast;
 import org.acme.beans.caching.WeatherForecastService;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -21,6 +24,11 @@ public class WeatherForecastResource {
     CachedService cachedService;
 
     @GET
+    @Operation(summary = "summary: gets weather forecast",
+      description = "description: uses cashing for 60s")
+    @APIResponses({@APIResponse(
+      name = "name: Forecast Response", responseCode = "200",
+      description = "description: the cashed (60s) forecast")})
     public WeatherForecast getForecast(
       @QueryParam("city") String city, @QueryParam("days") long days) {
         long executionStart = System.currentTimeMillis();

@@ -1,5 +1,6 @@
 package org.acme.beans.swagger;
 
+import org.eclipse.microprofile.auth.LoginConfig;
 import org.eclipse.microprofile.openapi.annotations.OpenAPIDefinition;
 import org.eclipse.microprofile.openapi.annotations.info.Contact;
 import org.eclipse.microprofile.openapi.annotations.info.Info;
@@ -8,6 +9,10 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import javax.ws.rs.core.Application;
 
+// The authMethod and realmName values are prescribed by MicroProfile –
+// they must be MP-JWT and TCK-MP-JWT, respectively. Now we should
+// be able to hit that endpoint with Postman.
+@LoginConfig(authMethod = "MP-JWT",realmName = "TCK-MP-JWT")
 @OpenAPIDefinition(
   tags = {
     @Tag(name = "NotExistingController", description = "Not existing " +

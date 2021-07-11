@@ -1,6 +1,10 @@
 package org.acme.controllers;
 
 import org.acme.beans.restclient.HttpBinServiceDAO;
+import org.eclipse.microprofile.faulttolerance.Asynchronous;
+import org.eclipse.microprofile.faulttolerance.Bulkhead;
+import org.eclipse.microprofile.faulttolerance.Retry;
+import org.eclipse.microprofile.faulttolerance.Timeout;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
@@ -12,6 +16,9 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.StreamingOutput;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
+import java.time.temporal.ChronoUnit;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
 
@@ -29,11 +36,35 @@ public class RestClientController {
     @RestClient
     HttpBinServiceDAO httpBinService;
 
+// ---- MicroProfile Fault Tolerance API ----
+// MicroProfile’s fault tolerance strategy revolves around five
+// annotations:
+// - 1) @Timeout to manage the wait time before reporting failure.
+// - 2) @Retry to define retry tactics for failed executions.
+// - 3) @Fallback to define alternative handling in case of failure.
+// - 4) @Bulkhead to control the limits of concurrent access to a method;
+//      helps to prevent overwhelming the resource. It’s a solid way to
+//      manage the throughput to asynchronous methods.
+// - 5) @CircuitBreaker to fail fast where applicable.
+
+
     @GET
     @Path("/hello-image")
     @Cache(maxAge = 30)
     @Operation(summary = "Returns an image")
     @Produces("image/jpg")
+    @Retry(delay = 2000, delayUnit = ChronoUnit.MILLIS, maxRetries = 4,
+    retryOn = {SocketTimeoutException.class, ConnectException.class})
+    // This method should be retried four times, with a delay of
+    // 2 seconds between each attempt. The retries should be attempted
+    // only in case of a SocketTimeoutException/ConnectionException.
+    @Asynchronous
+    // Asynchronous to pool excess requests.
+    @Bulkhead(value=10, waitingTaskQueue = 30)
+    // This will now allow ten concurrent requests and a backlog
+    // of 30 waiting for processing.
+    // Any more and a BulkHeadException will be thrown!
+    @Timeout(value = 5000, unit = ChronoUnit.MILLIS)
     public Response helloImage()
       throws InterruptedException, ExecutionException {
         CompletionStage<byte[]> futureImage =

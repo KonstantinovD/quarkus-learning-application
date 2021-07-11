@@ -2,6 +2,7 @@ package org.acme.beans.restclient;
 
 import org.acme.beans.exceptionmapper.HttpBinExceptionMapper;
 import org.acme.beans.jaxrsfilters.LoggingFilter;
+import org.eclipse.microprofile.faulttolerance.Timeout;
 import org.eclipse.microprofile.rest.client.annotation.ClientHeaderParam;
 import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
@@ -9,6 +10,7 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.time.temporal.ChronoUnit;
 import java.util.Base64;
 import java.util.concurrent.CompletionStage;
 
@@ -45,6 +47,7 @@ public interface HttpBinServiceDAO {
     //the binary data in the response from httpbin.org, for that specific
     //endpoint. Flagging this as reactive makes this request asynchronous,
     //event-driven, and CPU-efficient. The best of three worlds.
+    @Timeout(value = 5000, unit = ChronoUnit.MILLIS)
     CompletionStage<byte[]> getImageAsync();
 
     @PATCH
